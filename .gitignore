@@ -7,3 +7,6 @@ phpunit.xml
 clover.xml
 vendor
 coverage
+apiSpotify.key
+build_music_db.py
+.gitignore
