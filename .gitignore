@@ -10,3 +10,4 @@ coverage
 apiSpotify.key
 build_music_db.py
 .gitignore
+__pycache__/

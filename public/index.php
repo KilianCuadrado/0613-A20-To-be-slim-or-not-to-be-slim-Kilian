@@ -20,12 +20,17 @@ $app->get('/', function (Request $request, Response $response) {
     return $response;
 });
 
-//REPUSTA JSON AMB TOTS ELS GRUPS
-$app->get('/api/grups', function (Request $request, Response $response) {
+$app->get('/grup/{id:[0-9]+}', function (Request $request, Response $response) {
+    ob_start();
+    include __DIR__ . '/pages/grup.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html !== false ? $html : '');
+    return $response;
+});
 
-    include_once __DIR__ . '/../src/api/grups.php';
-    return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-
+$app->get('/api/grups[/{id:[0-9]+}[/{resource}]]', function (Request $request, Response $response) {
+    include __DIR__ . '/../src/api/grups.php';
+    return $response;
 });
 
 $app->run();
