@@ -28,8 +28,21 @@ $app->get('/grup/{id:[0-9]+}', function (Request $request, Response $response) {
     return $response;
 });
 
+$app->get('/album/{id:[0-9]+}', function (Request $request, Response $response) {
+    ob_start();
+    include __DIR__ . '/pages/album.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html !== false ? $html : '');
+    return $response;
+});
+
 $app->get('/api/grups[/{id:[0-9]+}[/{resource}]]', function (Request $request, Response $response) {
     include __DIR__ . '/../src/api/grups.php';
+    return $response;
+});
+
+$app->get('/api/albumes/{id:[0-9]+}', function (Request $request, Response $response) {
+    include __DIR__ . '/../src/api/albumes.php';
     return $response;
 });
 

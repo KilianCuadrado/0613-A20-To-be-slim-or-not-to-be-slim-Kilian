@@ -53,14 +53,17 @@ const renderAlbumes = (albumes) => {
     albumes.forEach((album) => {
         const item = document.createElement("article");
         item.className = "col-12 col-md-6";
+        const albumUrl = `/album/${album.id}`;
         item.innerHTML = `
-            <div class="card h-100">
-                <div class="card-body">
-                    <h3 class="h6 mb-2">${album.nombreAlbum || "Album sin nombre"}</h3>
-                    <p class="small text-muted mb-1"><strong>Lanzamiento:</strong> ${album.fechaLanzamiento || "Dato sin confirmar"}</p>
-                    <p class="small text-muted mb-1"><strong>Cancion popular:</strong> ${album.cancionMasPopular || "Dato sin confirmar"}</p>
+            <a href="${albumUrl}" data-album-id="${album.id}" class="text-decoration-none text-reset d-block h-100">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="h6 mb-2">${album.nombreAlbum || "Album sin nombre"}</h3>
+                        <p class="small text-muted mb-1"><strong>Lanzamiento:</strong> ${album.fechaLanzamiento || "Dato sin confirmar"}</p>
+                        <p class="small text-muted mb-1"><strong>Cancion popular:</strong> ${album.cancionMasPopular || "Dato sin confirmar"}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         `;
         albumesList.appendChild(item);
     });
@@ -113,3 +116,29 @@ const loadGrupDetail = async () => {
 };
 
 loadGrupDetail();
+
+albumesList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+        return;
+    }
+
+    const albumLink = target.closest("a[data-album-id]");
+    if (!albumLink) {
+        return;
+    }
+
+    const albumId = albumLink.getAttribute("data-album-id");
+    if (!albumId) {
+        return;
+    }
+
+    const grupId = extractGrupId();
+    if (!grupId) {
+        return;
+    }
+
+    sessionStorage.setItem("albumAccessId", albumId);
+    sessionStorage.setItem("albumAccessGrupId", grupId);
+    sessionStorage.setItem("albumAccessAt", Date.now().toString());
+});
